@@ -45,10 +45,17 @@ const controller = {
 			description : description.trim(),
 			image : 'default-image.png'
 		}
-
+		
 		let productsModify = [...products, newProduct];
-
+		
 		storeProducts(productsModify);
+
+		/*products = productsModify;
+		return res.render('products', {
+			products,
+			toThousand,
+			newProduct
+		});*/
 
 		return res.redirect('/products')
 
@@ -81,7 +88,7 @@ const controller = {
 			}
 			return product
 		});
-
+		console.log(productsModify);
 		storeProducts(productsModify);
 		return res.redirect('/products/detail/' + req.params.id)
 	},
@@ -89,7 +96,7 @@ const controller = {
 	// Delete - Delete one product from DB
 	destroy : (req, res) => {
 		// Do the magic
-		let productsModify = loadProducts().filter(product => product.id !== +params.id);
+		let productsModify = loadProducts().filter(product => product.id !== +req.params.id);
 
 		storeProducts(productsModify);
 		return res.redirect('/products')
