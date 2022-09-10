@@ -7,6 +7,13 @@ const loadProducts = () => {
     );
 };
 
+const storeProducts = () => {
+    return JSON.parse(
+        fs.readFileSync(path.join(__dirname, './productsDataBase.json'), 'utf-8')
+    );
+};
+
 module.exports = {
-    loadProducts
+    loadProducts,
+    storeProducts
 }
