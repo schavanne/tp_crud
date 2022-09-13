@@ -12,6 +12,17 @@ const controller = {
 			toThousand
 		})
 	},
+	indexAlert: (req, res) => {
+		// Do the magic
+		let products = loadProducts();
+		let newProduct = products.find(product => product.id === +req.params.id) ?? "borrado";
+
+		return res.render('products', {
+			products,
+			toThousand,
+			newProduct
+		})
+	},
 
 	// Detail - Detail from one product
 	detail: (req, res) => {
@@ -50,14 +61,7 @@ const controller = {
 		
 		storeProducts(productsModify);
 
-		/*products = productsModify;
-		return res.render('products', {
-			products,
-			toThousand,
-			newProduct
-		});*/
-
-		return res.redirect('/products')
+		return res.redirect('/products/'+newProduct.id);
 
 	},
 
@@ -99,7 +103,7 @@ const controller = {
 		let productsModify = loadProducts().filter(product => product.id !== +req.params.id);
 
 		storeProducts(productsModify);
-		return res.redirect('/products')
+		return res.redirect('/products/'+req.params.id)
 	}
 };
 

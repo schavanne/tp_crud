@@ -1,8 +1,32 @@
-«<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <!-- Include Head -->
 <%- include('partials/head', {title: 'Todos los productos'}) %>
 <body>
+	<% if (typeof newProduct !== "undefined") { %>
+		<script>
+			let url = window.location.href;
+			url = url.split("products/");
+			let newUrl = url[0] + "products/";
+			window.history.pushState({page: "another"}, "another page", newUrl);
+
+
+			if("<%= newProduct %>" == "borrado"){
+				Swal.fire(
+				'Producto borrado!',
+				'',
+				'error'
+				)
+			}else{
+				Swal.fire(
+				'Nuevo producto agregado!',
+				"<%= newProduct.name %>",
+				'success'
+				)
+			}
+			
+		</script>
+	<% } %>
 	<!-- Header -->
 	<%- include('partials/headerNavbar') %>
 	<!-- /Header -->
@@ -27,7 +51,7 @@
 		</div>
 	</div>
 	<!-- /todos los productos -->
-
+	
 	<!-- footer -->
 	<%- include('partials/footer') %>
 	<!-- /footer -->
