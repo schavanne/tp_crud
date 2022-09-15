@@ -4,13 +4,14 @@ const router = express.Router();
 
 // ************ Controller Require ************
 const productsController = require('../controllers/productsController');
+const productValidator = require('../validations/productValidator.js')
 
 /*** GET ALL PRODUCTS ***/ 
 router.get('/', productsController.index); 
 
 /*** CREATE ONE PRODUCT ***/ 
 router.get('/create', productsController.create); 
-router.post('/store', productsController.store); 
+router.post('/store',productValidator, productsController.store); 
 
 
 /*** GET ONE PRODUCT ***/ 

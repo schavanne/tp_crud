@@ -1,5 +1,5 @@
 const {loadProducts,storeProducts} = require('../data/dbModule');
-
+const {validationResult} = require('express-validator');
 const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
 const controller = {
@@ -43,25 +43,33 @@ const controller = {
 	
 	// Create -  Method to store
 	store: (req, res) => {
-		// Do the magic
-		const {name, price, discount, category, description} = req.body;
-		let products = loadProducts();
+		let errors = validationResult(req);
+        errors = errors.mapped();
+		if(Object.entries(errors).length === 0){
+			const {name, price, discount, category, description} = req.body;
+			let products = loadProducts();
 
-		const newProduct = {
-			id : products[products.length -1].id + 1,
-			name : name.trim(),
-			price : +price,
-			discount : +discount,
-			category,
-			description : description.trim(),
-			image : 'default-image.png'
+			const newProduct = {
+				id : products[products.length -1].id + 1,
+				name : name.trim(),
+				price : +price,
+				discount : +discount,
+				category,
+				description : description.trim(),
+				image : 'default-image.png'
+			}
+			
+			let productsModify = [...products, newProduct];
+			
+			storeProducts(productsModify);
+
+			return res.redirect('/products/'+newProduct.id);
+		}else{
+			return res.render('product-create-form',{
+                errors,
+                old : req.body
+            })
 		}
-		
-		let productsModify = [...products, newProduct];
-		
-		storeProducts(productsModify);
-
-		return res.redirect('/products/'+newProduct.id);
 
 	},
 
